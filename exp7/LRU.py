@@ -1,55 +1,24 @@
-def findLRU(time, n):
-    minimum = time[0]
-    pos = 0
-    for i in range(1, n):
-        if time[i] < minimum:
-            minimum = time[i]
-            pos = i
-    return pos
+from collections import deque
 
-no_of_frames = int(input("\nEnter the number of frames : "))
-no_of_pages = int(input("\nEnter the number of pages : "))
+def lru(page_list, frame_count):
+    page_faults = 0
+    page_hits = 0
+    frames = deque(maxlen=frame_count)
+    for page in page_list:
+        if page not in frames:
+            page_faults += 1
+            if len(frames) == frames.maxlen:
+                frames.popleft()
+            frames.append(page)
+        else:
+            frames.remove(page)
+            frames.append(page)
+            page_hits += 1
+    print(f"Page hits: {page_hits}, Page misses: {page_faults}")
+    print(f"Page hit ratio: {page_hits/(page_hits+page_faults)}, Page miss ratio: {page_faults/(page_hits+page_faults)}")
+    return page_faults
 
-frames = [-1] * no_of_frames
-pages = []
 
-print("\nEnter the Values of the Reference String : ")
-for i in range(no_of_pages):
-    pages.append(int(input("Value No. [%d] : " % (i+1))))
-
-counter = 0
-time = [0] * no_of_frames
-faults = 0
-for i in range(no_of_pages):
-    flag1 = flag2 = 0
-    for j in range(no_of_frames):
-        if frames[j] == pages[i]:
-            counter += 1
-            time[j] = counter
-            flag1 = flag2 = 1
-            break
-    if flag1 == 0:
-        for j in range(no_of_frames):
-            if frames[j] == -1:
-                counter += 1
-                faults += 1
-                frames[j] = pages[i]
-                time[j] = counter
-                flag2 = 1
-                break
-    if flag2 == 0:
-        pos = findLRU(time, no_of_frames)
-        counter += 1
-        faults += 1
-        frames[pos] = pages[i]
-        time[pos] = counter
-
-    print("\n")
-    for j in range(no_of_frames):
-        print(" %d\t" % frames[j], end="")
-
-page_hits = no_of_pages - faults
-print("\n Total Page Hits : %d" % page_hits)
-print("\n Total Page Miss : %d" % faults)
-print("\n Page Hit Ratio : %f" % (float(page_hits) / no_of_pages))
-print("\n Page Miss Ratio : %f" % (float(faults) / no_of_pages))
+seq = [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+nof = 4
+lru(seq,nof)
