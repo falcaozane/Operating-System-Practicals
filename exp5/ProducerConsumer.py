@@ -1,5 +1,5 @@
 import threading
-import Queue as queue
+import queue as queue
 import time
 
 queue = queue.Queue(5)
