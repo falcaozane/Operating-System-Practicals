@@ -12,14 +12,14 @@ int main()
 	{
 		printf("I am the child, my process ID is %d\n",getpid());
 		printf("My parent's process ID is %d\n",getppid());
-		sleep(30);
+		sleep(10);
 		printf("\nAfter sleep\nI am the child, my process ID is %d\n",getpid());
                 printf("My parent's process ID is %d\n",getppid());
 		exit(0);
 	}
 	else
 	{
-		sleep(20);
+		sleep(10);
 		printf("I am the parent, my process ID is %d\n",getpid());
                 printf("The parent's parent, process ID is %d\n",getppid());
 		printf("Parent terminates\n");
