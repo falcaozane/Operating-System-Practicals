@@ -47,9 +47,9 @@ def round_robin(processes, quantum):
 if __name__ == "__main__":
     processes = [
         Process('A', 0, 5),
-        Process('B', 1, 3),
-        Process('C', 2, 8),
-        Process('D', 3, 6)
+        Process('B', 1, 4),
+        Process('C', 2, 2),
+        Process('D', 4, 1)
     ]
     quantum = 2
 
