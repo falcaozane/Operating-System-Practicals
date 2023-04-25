@@ -24,19 +24,14 @@ for k in range(5):
                 ind += 1
                 for y in range(m):
                     avail[y] += alloc[i][y]
-                f[i] = 1               
-flag = 1
-for i in range(n):
-    if f[i] == 0:
-        flag = 0
-        print("The following system is not safe")
+                f[i] = 1
+    # check if there is any process that cannot be allocated resources
+    if 0 not in f:
         break
-if flag == 1:
+if 0 in f:
+    print("The following system is not safe. Deadlock exists.")
+else:
     print("Following is the SAFE Sequence")
     for i in range(n - 1):
         print("P",ans[i],end='->')
     print("P",ans[n - 1])
-
-
-
-
