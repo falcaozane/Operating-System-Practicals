@@ -1,58 +1,56 @@
-# CPU Scheduling - Round Robin
+from collections import deque
 
-n = int(input("Enter Number of Processes: "))
+class Process:
+    def __init__(self, name, arrival_time, burst_time):
+        self.name = name
+        self.arrival_time = arrival_time
+        self.burst_time = burst_time
+        self.remaining_time = burst_time
+        self.waiting_time = 0
+        self.turnaround_time = 0
 
-p = []  # list of processes
+def round_robin(processes, quantum):
+    queue = deque()
+    current_time = 0
+    total_waiting_time = 0
+    total_turnaround_time = 0
+    completed_processes = []
 
-# get process information from user input
-for i in range(n):
-    name = chr(65 + i)  # generate process name (A, B, C, ...)
-    print("\nProcess", name)
-    at = int(input("Arrival Time: "))
-    bt = int(input("Burst Time: "))
-    p.append({"name": name, "at": at, "bt": bt, "rt": bt, "completed": False})
-    
-tq = int(input("\nEnter the time quantum: "))
+    for process in processes:
+        queue.append(process)
 
-p.sort(key=lambda x: x["at"])  # sort processes by arrival time
+    while queue:
+        current_process = queue.popleft()
+        if current_process.remaining_time <= quantum:
+            current_time += current_process.remaining_time
+            current_process.turnaround_time = current_time - current_process.arrival_time
+            current_process.waiting_time = current_process.turnaround_time - current_process.burst_time
+            total_waiting_time += current_process.waiting_time
+            total_turnaround_time += current_process.turnaround_time
+            completed_processes.append(current_process)
+        else:
+            current_time += quantum
+            current_process.remaining_time -= quantum
+            while queue and queue[-1] == current_process:
+                queue.pop()
+            queue.append(current_process)
 
-queue = [0]  # initialize queue with first process
-time = p[0]["at"]  # initialize time with first process arrival time
+    print("Name\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time")
+    for process in completed_processes:
+        print(f"{process.name}\t{process.arrival_time}\t\t{process.burst_time}\t\t{process.waiting_time}\t\t{process.turnaround_time}")
 
-print("Process execution order: ", end="")
+    avg_waiting_time = total_waiting_time / len(completed_processes)
+    avg_turnaround_time = total_turnaround_time / len(completed_processes)
+    print(f"Average waiting time: {avg_waiting_time}")
+    print(f"Average turnaround time: {avg_turnaround_time}")
 
-# run until all processes have completed
-while any(not p[i]["completed"] for i in range(n)):
-    i = queue.pop(0)  # get next process from queue
-    if p[i]["rt"] <= tq:  # process completes
-        time += p[i]["rt"]
-        p[i]["rt"] = 0
-        p[i]["completed"] = True
-        print(p[i]["name"], end=" ")
-        p[i]["wt"] = time - p[i]["at"] - p[i]["bt"]
-        p[i]["tt"] = time - p[i]["at"]
-        for j in range(n):  # enqueue new processes
-            if not p[j]["completed"] and p[j]["at"] <= time and j not in queue:
-                queue.append(j)
-    else:  # process not completed
-        time += tq
-        p[i]["rt"] -= tq
-        print(p[i]["name"], end=" ")
-        for j in range(n):  # enqueue new processes
-            if not p[j]["completed"] and p[j]["at"] <= time and j != i and j not in queue:
-                queue.append(j)
-        queue.append(i)  # enqueue uncompleted process
+if __name__ == "__main__":
+    processes = [
+        Process('A', 0, 5),
+        Process('B', 1, 3),
+        Process('C', 2, 8),
+        Process('D', 3, 6)
+    ]
+    quantum = 2
 
-# calculate average waiting time and turnaround time
-avg_wt = sum(p[i]["wt"] for i in range(n)) / n
-avg_tt = sum(p[i]["tt"] for i in range(n)) / n
-
-# print process information
-print("\nName\tArrival Time\tBurst Time\tResponse Time\tTurnaround Time")
-for i in range(n):
-    print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-        p[i]["name"], p[i]["at"], p[i]["bt"], p[i]["wt"], p[i]["tt"]))
-
-# print average waiting time and turnaround time
-print("\nAverage waiting time: {:.2f}".format(avg_wt))
-print("Average turnaround time: {:.2f}".format(avg_tt))
+    round_robin(processes, quantum)
