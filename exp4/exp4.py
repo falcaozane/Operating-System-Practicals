@@ -54,11 +54,7 @@ def round_robin(processes,AT,BT):
                     if AT[k]<=count and AT[g]==AT[k]:
                         ready_queue.append(processes[k])
                         g=g+1
-                    k=k+1
-            
-            
-            
-            
+                    k=k+1   
         res=all(ele==0 for ele in TBT)
         
         if res:
