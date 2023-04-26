@@ -7,7 +7,7 @@ allocation = [-1]*n
 for i in range(n):
     for j in range(m):
         if blocks[j]>=process[i]:
-            choosen = blocks[i]
+            choosen = blocks[j]
             allocation[i] = choosen
             blocks[j] -= process[i]
             break
@@ -20,4 +20,4 @@ for i in range(n):
     if allocation[i] != -1:
         print(allocation[i])
     else:
-        print("Not Allocated")
+        print("Not Allocated and will wait")
