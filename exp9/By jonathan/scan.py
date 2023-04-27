@@ -1,6 +1,6 @@
-reqSequence = [176, 79, 34, 60, 92, 11, 41, 114]
+reqSequence = [82,170,43,140,24,16,190]
 initialHead = 50
-
+diskrange = 199
 
 left = [x for x in reqSequence if x<=50]
 left.sort(reverse=True)
