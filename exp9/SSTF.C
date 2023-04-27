@@ -2,10 +2,9 @@
 #include<stdlib.h>
 #include<math.h>
 
-
-void main(){
-    int queue[30],n,head,i,j,k,seek=0,range,diff,temp,q1[20],q2[20],temp1=0,temp2=0;
-    printf("SCAN algo: \n");
+int main(){
+    int queue[30],n,head,i,j,k,seek=0,range,diff,temp,q1[30],q2[30],temp1=0,temp2=0;
+    printf("SSTF algo: \n");
     printf("Enter max range of disk: ");
     scanf("%d",&range);
     printf("\nEnter no. of queue request: ");
@@ -45,24 +44,21 @@ void main(){
             }
         }
     }
-    // copy q1 contents to queue
-    for( i = 1,j=0; j < temp1; i++,j++)
-    {
-        queue[i]=q1[j];
-    }
-    queue[i]=range;
+    queue[0]=head;
+    printf("%d=>",queue[0]);
     // copy q2 contents to queue
-    for( i = temp1+2,j=0; j < temp2; i++,j++)
+    for( i = 1,j=0; j < temp2; i++,j++)
     {
         queue[i]=q2[j];
-    }
-    queue[i]=0;
-    queue[0]=head;
-    for (j = 0; j <=n; j++)
-    {
-        diff = abs(queue[j+1]-queue[j]);
-        seek+=diff;
-        printf("\n Disk moves from %d => %d with seek time: %d \n",queue[j],queue[j+1],diff);
+        printf("%d=>",queue[i]);
     }
     
+    // copy q1 contents to queue
+    for( i = temp2+2,j=0; j < temp1; i++,j++)
+    {
+        queue[i]=q1[j];
+        printf("%d=>",queue[i]);
+    }
+    //queue[i]=range;
+    //queue[0]=head;
 }
