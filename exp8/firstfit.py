@@ -7,8 +7,8 @@ allocation = [-1]*n
 for i in range(n):
     for j in range(m):
         if blocks[j]>=process[i]:
-            choosen = blocks[j]
-            allocation[i] = choosen
+            chosen = blocks[j]
+            allocation[i] = chosen
             blocks[j] -= process[i]
             break
     print('memory blocks after ',i+1,' process -->',blocks)
