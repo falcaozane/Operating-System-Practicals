@@ -14,19 +14,9 @@ int main()
     {
         done[i] = 0;
         scanf("%d", &requests[i]);
-        if (requests[i] < 0 || requests[i] > disk_size)
-        {
-            printf("Error: Request is outside the range of the disk %d\n ", i+1);
-            return 0;
-        }
     }
     printf("Enter the head position: ");
     scanf("%d", &head_pos);
-    if (head_pos < 0 || head_pos > disk_size) {
-    printf("Error: Head position is outside the range of the disk\n");
-    return 0;
-    }
-    printf("Head position: %d\n", head_pos);
     printf("Sequence: %d -> ", head_pos);
     for (int count = 0; count < n; count++)
     {
@@ -46,9 +36,8 @@ int main()
         done[min_idx] = 1;
         seek_length += min_dist;
         head_pos = requests[min_idx];
-        printf("%d -> ", requests[min_idx]);
+        printf("%d => ", requests[min_idx]);
     }
-    printf("\n");
-    printf("Total seek length: %d\n", seek_length);
+    printf("\nTotal seek length: %d\n", seek_length);
     return 0;
 }
