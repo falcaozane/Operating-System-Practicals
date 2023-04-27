@@ -1,14 +1,12 @@
-from collections import deque
-
 def lru(page_list, frame_count):
     page_faults = 0
     page_hits = 0
-    frames = deque(maxlen=frame_count)
+    frames = []
     for page in page_list:
         if page not in frames:
             page_faults += 1
-            if len(frames) == frames.maxlen:
-                frames.popleft()
+            if len(frames) == frame_count:
+                frames.pop(0)
             frames.append(page)
         else:
             frames.remove(page)
